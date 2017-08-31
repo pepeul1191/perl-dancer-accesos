@@ -1,4 +1,4 @@
-package MyWeb::App;
+package Handler::App;
 use Dancer2;
 
 our $VERSION = '0.1';
@@ -12,6 +12,6 @@ get '/hola' => sub {
     return 'hola mundo!';
 };
 
-#get  '/login'        => \&MyWeb::Login::index;
+#get  '/login'        => \&Handler::Login::index;
 
 true;

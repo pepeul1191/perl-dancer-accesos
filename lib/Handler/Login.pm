@@ -1,4 +1,4 @@
-package MyWeb::Login;
+package Handler::Login;
 use Dancer2;
 
 get '/' => sub {

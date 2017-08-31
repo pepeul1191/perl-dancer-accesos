@@ -7,18 +7,18 @@ use lib "$FindBin::Bin/../lib";
 
 
 # use this block if you don't need middleware, and only have a single target Dancer app to run here
-use MyWeb::App;
-use MyWeb::Login;
+use Handler::App;
+use Handler::Login;
 
-MyWeb::App->to_app;
+Handler::App->to_app;
 
 use Plack::Builder;
 
 builder {
     enable 'Deflater';
-    MyWeb::App->to_app;
-    mount '/'      => MyWeb::App->to_app;
-    mount '/login'      => MyWeb::Login->to_app;
+    Handler::App->to_app;
+    mount '/'      => Handler::App->to_app;
+    mount '/login'      => Handler::Login->to_app;
 }
 
 
@@ -26,12 +26,12 @@ builder {
 =begin comment
 # use this block if you want to include middleware such as Plack::Middleware::Deflater
 
-use MyWeb::App;
+use Handler::App;
 use Plack::Builder;
 
 builder {
     enable 'Deflater';
-    MyWeb::App->to_app;
+    Handler::App->to_app;
 }
 
 =end comment
@@ -41,12 +41,12 @@ builder {
 =begin comment
 # use this block if you want to include middleware such as Plack::Middleware::Deflater
 
-use MyWeb::App;
-use MyWeb::App_admin;
+use Handler::App;
+use Handler::App_admin;
 
 builder {
-    mount '/'      => MyWeb::App->to_app;
-    mount '/admin'      => MyWeb::App_admin->to_app;
+    mount '/'      => Handler::App->to_app;
+    mount '/admin'      => Handler::App_admin->to_app;
 }
 
 =end comment

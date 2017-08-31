@@ -1,12 +1,12 @@
 use strict;
 use warnings;
 
-use MyWeb::App;
+use Handler::App;
 use Test::More tests => 2;
 use Plack::Test;
 use HTTP::Request::Common;
 
-my $app = MyWeb::App->to_app;
+my $app = Handler::App->to_app;
 is( ref $app, 'CODE', 'Got app' );
 
 my $test = Plack::Test->create($app);
