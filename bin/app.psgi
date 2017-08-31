@@ -8,6 +8,7 @@ use lib "$FindBin::Bin/../lib";
 
 # use this block if you don't need middleware, and only have a single target Dancer app to run here
 use MyWeb::App;
+use MyWeb::Login;
 
 MyWeb::App->to_app;
 
@@ -16,6 +17,8 @@ use Plack::Builder;
 builder {
     enable 'Deflater';
     MyWeb::App->to_app;
+    mount '/'      => MyWeb::App->to_app;
+    mount '/login'      => MyWeb::Login->to_app;
 }
 
 
