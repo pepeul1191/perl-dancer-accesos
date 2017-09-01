@@ -22,6 +22,8 @@ template: "simple"
 
 BASE_URL: "http://localhost:5000/"
 STATICS_URL: "http://localhost:81/animalitos/media/"
+STATICS_URL: "http://localhost:81/animalitos/media/"
+backend: "http://127.0.0.1:3000/"
 ambiente: "desarrollo"
 nombre_app: "Animalitos Perl"
 

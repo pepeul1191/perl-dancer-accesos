@@ -9,6 +9,7 @@ use lib "$FindBin::Bin/../lib";
 # use this block if you don't need middleware, and only have a single target Dancer app to run here
 use Handler::App;
 use Handler::Login;
+use Handler::Distrito;
 
 Handler::App->to_app;
 
@@ -19,6 +20,7 @@ builder {
     Handler::App->to_app;
     mount '/'      => Handler::App->to_app;
     mount '/login'      => Handler::Login->to_app;
+    mount '/distrito'      => Handler::Distrito->to_app;
 }
 
 
