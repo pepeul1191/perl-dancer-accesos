@@ -1,5 +1,7 @@
 package Handler::App;
 use Dancer2;
+use Data::Dumper;
+use JSON::Create 'create_json';
 
 our $VERSION = '0.1';
 
@@ -8,11 +10,26 @@ hook before => sub {
   };
 
 get '/' => sub {
-    template 'index' => { 'title' => 'Perl Dancer2 ????' };
+	my $thing = {'Yes' => true, 'No' => false};
+
+	my %context = (
+        'title'  => 'Animalitos Perl',
+        'menu' => '[{"url":"#/","nombre":"Home"},{"url":"#/buscar","nombre":"Buscar"},{"url":"#/contacto","nombre":"Contacto"}]',
+        'data'  => '""',
+    );
+    template 'animalitos/index.tt', {%context}, { layout => 'site.tt' };
 };
 
 get '/hola' => sub {
     return 'hola mundo!';
 };
 
-true;
+sub alc {
+	my ($rq) = @_;
+	print("1 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	$rq.redirect('http://softweb.pe');
+	print("2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	return 'true';
+}
+
+1;

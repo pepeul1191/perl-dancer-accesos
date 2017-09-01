@@ -1,18 +1,23 @@
 package Handler::Login;
+use Filter::Acl;
 use Dancer2;
 
 hook before => sub {
     response_header 'X-Powered-By' => 'Perl Dancer 1.3202, Ubuntu';
+    print Filter::Acl::alc(request);
   };
 
-get '/anda' => sub {
-	#response_header 'X-Powered-By' => 'Perl Dancer 1.3202';
-    return 'hola mundo!';
-};
-
 get '/' => sub {
-	#response_header 'X-Powered-By' => 'Perl Dancer 1.3202';
-    return 'hola mundo!';
+	#redirect 'http://softweb.pe/';
+    return 'login';
 };
 
-true;
+get '/anda' => sub {
+    return 'anda';
+};
+
+post '/acceder' => sub {
+    return 'accedersh';
+};
+
+1;

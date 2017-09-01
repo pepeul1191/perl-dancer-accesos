@@ -20,6 +20,11 @@ charset: "UTF-8"
 
 template: "simple"
 
+BASE_URL: "http://localhost:5000/"
+STATICS_URL: "http://localhost:81/animalitos/media/"
+ambiente: "desarrollo"
+nombre_app: "Animalitos Perl"
+
 # template: "template_toolkit"
 # engines:
 #   template:
