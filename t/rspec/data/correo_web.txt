@@ -1,0 +1,3 @@
+{"nombres" : "José Pepito","apellidos" : "Valdivia Caballero","correo" : "pepe.valdivia.caballero@gmail.com",  "telefono" : "987731975","mensaje" : "hola mundo"}
+{"nombres" : "José Pepito","apellidos" : "Valdivia Caballero","correo" : "jvaldivia@softweb.pe",  "telefono" : "987731975","mensaje" : "hola mundo para gmail"}
+{"nombres" : "Yacky Chinche","apellidos" : "Ramirez de Valdivia","correo" : "yramirez@softweb.pe",  "telefono" : "987731975","mensaje" : "bies"}
