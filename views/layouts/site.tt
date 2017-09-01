@@ -4,7 +4,7 @@
 	<meta charset="<% settings.charset %>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 	<title><% title %></title>
-	<link href="<%settings.STATICS_URL%>dist/assets/styles.min.css" rel="stylesheet" type="text/css"/>
+	<link href="<%settings.STATICS_URL%>dist/styles.min.css" rel="stylesheet" type="text/css"/>
 	<script type="text/javascript">
 		var BASE_URL = '<%settings.BASE_URL%>';
 	    var STATICS_URL  = '<%settings.STATICS_URL%>';
