@@ -16,4 +16,11 @@ post '/validar_usuario_repetido' => sub {
 	 return $client->responseContent();
 };
 
+post '/validar_correo_repetido' => sub {
+		my $url = config->{backend} . 'usuario/correo_repetido?correo=' . query_parameters->get('correo');
+		my $client = REST::Client->new();
+		$client->POST($url);
+	 return $client->responseContent();
+};
+
 1;
