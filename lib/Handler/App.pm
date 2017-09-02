@@ -16,6 +16,7 @@ get '/' => sub {
         'title'  => 'Animalitos Perl',
         'menu' => '[{"url":"#/","nombre":"Home"},{"url":"#/buscar","nombre":"Buscar"},{"url":"#/contacto","nombre":"Contacto"}]',
         'data'  => '""',
+        'qunit' => 1
     );
     template 'animalitos/index.tt', {%context}, { layout => 'site.tt' };
 };

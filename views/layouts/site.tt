@@ -11,9 +11,14 @@
 	    var MODULOS_JSON = JSON.parse('<%menu%>');
 	    console.log(MODULOS_JSON);
 	    var DATA = JSON.parse(<% data %>); 
-	</script>
+    </script>
 </head>
 <body>
+    <% if qunit == 1%>
+    <!-- Inicio QUnit Html-->
+    <div id="qunit"></div><div id="qunit-fixture"></div>
+    <!-- Fin QUnit Html-->
+    <%end%>
     <!-- Inicio Modal -->
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-container"  id="btnModal" style="display: none" >Launch demo modal</button>
     <div class="modal fade" id="modal-container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
@@ -159,6 +164,11 @@
 	<script id="yield" type="text/x-handlebars-template">
         <% content %>
     </script>
-<script type="text/javascript" src="<%settings.STATICS_URL%>dist/app.min.js"></script>
+    <script type="text/javascript" src="<%settings.STATICS_URL%>dist/app.min.js"></script>
+    <% if qunit == 1%>
+    <link rel="stylesheet" type="text/css" href="<%settings.STATICS_URL%>bower_components/qunit/qunit/qunit.css" />
+    <script type="text/javascript" src="<%settings.STATICS_URL%>bower_components/qunit/qunit/qunit.js"></script> 
+    <script type="text/javascript" src="<%settings.STATICS_URL%>test/registro.js"></script>
+ <% end %>
 </body>
 </html>

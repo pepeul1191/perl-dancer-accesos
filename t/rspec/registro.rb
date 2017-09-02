@@ -131,6 +131,6 @@ def crear
 end
 
 
-validar_correo_repetido
+#validar_correo_repetido
 validar_usuario_repetido
-crear
+#crear

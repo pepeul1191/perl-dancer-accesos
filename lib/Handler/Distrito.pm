@@ -9,7 +9,7 @@ hook before => sub {
     #print Filter::Acl::alc(request);
   };
 
-get '/buscar' => sub {
+post '/buscar' => sub {
 	my $url = config->{backend} . 'distrito/buscar?nombre=' . query_parameters->get('nombre');
 	my $client = REST::Client->new();
 	$client->GET($url);
