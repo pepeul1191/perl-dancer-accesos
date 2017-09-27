@@ -11,6 +11,7 @@ use Handler::App;
 use Handler::Login;
 use Handler::Distrito;
 use Handler::Registro;
+use Handler::Sistema;
 
 Handler::App->to_app;
 
@@ -23,6 +24,7 @@ builder {
     mount '/login'      => Handler::Login->to_app;
     mount '/distrito'      => Handler::Distrito->to_app;
     mount '/registro'      => Handler::Registro->to_app;
+     mount '/sistema'      => Handler::Sistema->to_app;
 }
 
 
