@@ -10,7 +10,7 @@ use Model::Sistema;
 
 hook before => sub {
     response_header 'X-Powered-By' => 'Perl Dancer 1.3202, Ubuntu';
-  };
+};
 
 get '/listar' => sub {
 	my $model = 'Model::Sistema';
