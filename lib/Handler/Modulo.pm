@@ -12,8 +12,8 @@ hook before => sub {
     response_header 'X-Powered-By' => 'Perl Dancer 1.3202, Ubuntu';
 };
 
-get '/listar/:modulo_id' => sub {
-    my $modulo_id = param('modulo_id');
+get '/listar/:sistema_id' => sub {
+    my $sistema_id = param('sistema_id');
 	my $model = 'Model::Modulo';
     my $modulos= $model->new();
     try {
