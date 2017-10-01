@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/../lib";
 use Handler::App;
 use Handler::Sistema;
 use Handler::Usuario;
+use Handler::Modulo;
 
 Handler::App->to_app;
 
@@ -19,6 +20,7 @@ builder {
     enable 'Deflater';
     Handler::App->to_app;
     mount '/'      => Handler::App->to_app;
+    mount '/modulo'      => Handler::Modulo->to_app;
     mount '/sistema'      => Handler::Sistema->to_app;
     mount '/usuario'      => Handler::Usuario->to_app;
 }
