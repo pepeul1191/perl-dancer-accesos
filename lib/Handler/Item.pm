@@ -8,10 +8,6 @@ use strict;
 use warnings;
 use Model::Item;
 
-hook before => sub {
-    response_header 'X-Powered-By' => 'Perl Dancer 1.3202, Ubuntu';
-};
-
 get '/listar/:modulo_id' => sub {
     my $modulo_id = param('modulo_id');
     my $model= 'Model::Item';
