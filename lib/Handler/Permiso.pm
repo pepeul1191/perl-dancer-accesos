@@ -17,7 +17,7 @@ get '/listar/:sistema_id' => sub {
     return to_json \@rpta;
 };
 
-get '/post' => sub {
+post '/guardar' => sub {
     my $data = decode_json(param('data'));
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
@@ -89,7 +89,7 @@ sub eliminar {
     $permisos->eliminar($id);
 }
 
-get '/listar_asociados' => sub {
+get '/listar_asociados/:rol_id' => sub {
     my $rol_id = param('rol_id');
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
