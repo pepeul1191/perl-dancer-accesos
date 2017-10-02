@@ -12,6 +12,7 @@ use Handler::Item;
 use Handler::Modulo;
 use Handler::Permiso;
 use Handler::Sistema;
+use Handler::Rol;
 use Handler::Subtitulo;
 use Handler::Usuario;
 
@@ -26,6 +27,7 @@ builder {
     mount '/item'      => Handler::Item->to_app;
     mount '/modulo'      => Handler::Modulo->to_app;
     mount '/permiso'      => Handler::Permiso->to_app;
+    mount '/rol'      => Handler::Rol->to_app;
     mount '/sistema'      => Handler::Sistema->to_app;
     mount '/subtitulo'      => Handler::Subtitulo->to_app;
     mount '/usuario'      => Handler::Usuario->to_app;
