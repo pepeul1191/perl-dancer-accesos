@@ -20,10 +20,6 @@ use Model::Usuario;
     $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
 =cut
 
-hook before => sub {
-    response_header 'X-Powered-By' => 'Perl Dancer 1.3202, Ubuntu';
-};
-
 get '/listar' => sub {
   	my $model = 'Model::Usuario';
   	my $usuarios= $model->new();

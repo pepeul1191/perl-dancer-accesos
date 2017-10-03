@@ -16,7 +16,7 @@ get '/listar/:sistema_id' => sub {
     return to_json \@rpta;
 };
 
-get '/post' => sub {
+post '/guardar' => sub {
     my $data = decode_json(param('data'));
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
