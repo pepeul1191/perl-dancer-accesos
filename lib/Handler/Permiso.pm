@@ -22,7 +22,7 @@ post '/guardar' => sub {
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
     my @eliminados = @{$data->{"eliminados"}};
-    my $id_subtitulo = $data->{"extra"}->{'id_subtitulo'};
+    my $sistema_id = $data->{"extra"}->{'sistema_id'};
     my @array_nuevos;
     my %rpta = ();
 
@@ -32,7 +32,7 @@ post '/guardar' => sub {
               my $temp_id = $nuevo->{'id'};
               my $nombre = $nuevo->{'nombre'};
               my $llave = $nuevo->{'llave'};
-              my $id_generado = crear($nombre, $llave);
+              my $id_generado = crear($nombre, $llave, $sistema_id);
               my %temp = ();
               $temp{ 'temporal' } = $temp_id;
               $temp{ 'nuevo_id' } = $id_generado;
@@ -45,7 +45,7 @@ post '/guardar' => sub {
               my $id = $editado->{'id'};
               my $nombre = $editado->{'nombre'};
               my $llave = $editado->{'llave'};
-              editar($id, $nombre, $llave);
+              editar($id, $nombre, $llave, $sistema_id);
             }
         }
 
@@ -68,22 +68,22 @@ post '/guardar' => sub {
 };
 
 sub crear {
-    my($self, $nombre, $llave) = @_;
+    my($nombre, $llave, $sistema_id) = @_;
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
 
-    return $permisos->crear($nombre, $llave);
+    return $permisos->crear($nombre, $llave, $sistema_id);
 }
 
 sub editar {
-    my($self, $id, $nombre, $llave) = @_;
+    my($id, $nombre, $llave, $sistema_id) = @_;
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
-    $permisos->editar($id, $nombre, $llave);
+    $permisos->editar($id, $nombre, $llave, $sistema_id);
 }
 
 sub eliminar {
-    my($self, $id) = @_;
+    my($id) = @_;
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
     $permisos->eliminar($id);

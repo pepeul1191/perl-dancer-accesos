@@ -32,11 +32,12 @@ sub listar {
 }
 
 sub crear {
-    my($self, $nombre, $llave) = @_;
-    my $sth = $self->{_dbh}->prepare('INSERT INTO permisos (nombre, llave) VALUES (?,?)') 
+    my($self, $nombre, $llave, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO permisos (nombre, llave, sistema_id) VALUES (?,?,?)') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
     $sth->bind_param( 2, $llave);
+    $sth->bind_param( 3, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
     my $id_generated = $self->{_dbh}->last_insert_id(undef, undef, undef, undef );
@@ -46,13 +47,13 @@ sub crear {
 }
 
 sub editar {
-    my($self, $id, $nombre, $llave) = @_;
-    my $sth = $self->{_dbh}->prepare('UPDATE permisos SET nombre = ?,  llave = ? WHERE id = ?') 
+    my($self, $id, $nombre, $llave, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('UPDATE permisos SET nombre = ?,  llave = ?, sistema_id = ? WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
     $sth->bind_param( 2, $llave);
-    $sth->bind_param( 3, $id);
-
+    $sth->bind_param( 3, $sistema_id);
+    $sth->bind_param( 4, $id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }
