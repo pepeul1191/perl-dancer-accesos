@@ -34,11 +34,12 @@ sub listar {
 }
 
 sub crear {
-    my($self, $url, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('INSERT INTO modulos (url, nombre) VALUES (?, ?)') 
+    my($self, $url, $nombre, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO modulos (url, nombre, sistema_id) VALUES (?, ?, ?)') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $url);
     $sth->bind_param( 2, $nombre);
+    $sth->bind_param( 3, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
     my $id_generated = $self->{_dbh}->last_insert_id(undef, undef, undef, undef );

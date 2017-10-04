@@ -32,7 +32,7 @@ post '/guardar' => sub {
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
     my @eliminados = @{$data->{"eliminados"}};
-    my $id_modulo = $data->{"extra"}->{'id_modulo'};
+    my $subtitulo_id = $data->{"extra"}->{'id_subtitulo'};
     my @array_nuevos;
     my %rpta = ();
 
@@ -41,7 +41,8 @@ post '/guardar' => sub {
            if ($nuevo) {
               my $temp_id = $nuevo->{'id'};
               my $nombre = $nuevo->{'nombre'};
-              my $id_generado = crear($id_modulo, $nombre);
+              my $url = $nuevo->{'url'};
+              my $id_generado = crear($subtitulo_id, $nombre, $url);
               my %temp = ();
               $temp{ 'temporal' } = $temp_id;
               $temp{ 'nuevo_id' } = $id_generado;
@@ -53,7 +54,8 @@ post '/guardar' => sub {
             if ($editado) {
               my $id = $editado->{'id'};
               my $nombre = $editado->{'nombre'};
-             editar($id, $id_modulo, $nombre);
+              my $url = $editado->{'url'};
+             editar($id, $subtitulo_id, $nombre, $url);
             }
         }
 
@@ -76,22 +78,22 @@ post '/guardar' => sub {
 };
 
 sub crear {
-    my($self, $id_modulo, $nombre) = @_;
+    my($subtitulo_id, $nombre, $url) = @_;
     my $model = 'Model::Item';
     my $items= $model->new();
 
-    return $items->crear($id_modulo, $nombre);
+    return $items->crear($subtitulo_id, $nombre, $url);
 }
 
 sub editar {
-    my($self, $id, $id_modulo, $nombre) = @_;
+    my($id, $subtitulo_id, $nombre, $url) = @_;
     my $model = 'Model::Item';
     my $items= $model->new();
-    $items->editar($id, $id_modulo, $nombre);
+    $items->editar($id, $subtitulo_id, $nombre, $url);
 }
 
 sub eliminar {
-    my($self, $id) = @_;
+    my($id) = @_;
     my $model = 'Model::Item';
     my $items= $model->new();
     $items->eliminar($id);

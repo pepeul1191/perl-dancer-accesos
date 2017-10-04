@@ -76,23 +76,23 @@ post '/guardar' => sub {
 };
 
 sub crear {
-    my($self, $id_modulo, $nombre) = @_;
-    my $model = 'MojoApp::Model::Subtitulos';
+    my($id_modulo, $nombre) = @_;
+    my $model = 'Model::Subtitulo';
     my $subtitulos= $model->new();
 
     return $subtitulos->crear($id_modulo, $nombre);
 }
 
 sub editar {
-    my($self, $id, $id_modulo, $nombre) = @_;
-    my $model = 'MojoApp::Model::Subtitulos';
+    my($id, $id_modulo, $nombre) = @_;
+    my $model = 'Model::Subtitulo';
     my $subtitulos= $model->new();
     $subtitulos->editar($id, $id_modulo, $nombre);
 }
 
 sub eliminar {
-    my($self, $id) = @_;
-    my $model = 'MojoApp::Model::Subtitulos';
+    my($id) = @_;
+    my $model = 'Model::Subtitulo';
     my $subtitulos= $model->new();
     $subtitulos->eliminar($id);
 }
