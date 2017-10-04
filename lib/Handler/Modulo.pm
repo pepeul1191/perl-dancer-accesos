@@ -10,10 +10,10 @@ use Model::Modulo;
 
 get '/listar/:sistema_id' => sub {
     my $sistema_id = param('sistema_id');
-	my $model = 'Model::Modulo';
+    my $model = 'Model::Modulo';
     my $modulos= $model->new();
     try {
-       my  @rpta = $modulos->listar();
+       my  @rpta = $modulos->listar($sistema_id);
        return to_json \@rpta;
     }
     catch {
