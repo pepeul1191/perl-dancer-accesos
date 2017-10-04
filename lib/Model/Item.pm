@@ -89,13 +89,6 @@ sub crear {
     $sth->bind_param( 1, $subtitulo_id);
     $sth->bind_param( 2, $nombre);
     $sth->bind_param( 3, $url);
-    print("\nsubtitulo: ");
-    print($subtitulo_id);
-    print("\nnombre: ");
-    print($nombre);
-    print("\nurl: ");
-    print($url);
-    print("\n");
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
     my $id_generated = $self->{_dbh}->last_insert_id(undef, undef, undef, undef );
