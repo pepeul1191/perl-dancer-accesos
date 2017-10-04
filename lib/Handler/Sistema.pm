@@ -64,7 +64,7 @@ post '/guardar' => sub {
         }
 
         $rpta{'tipo_mensaje'} = "success";
-        my @temp = ("Se ha registrado los cambios en los sistemas", @array_nuevos);
+        my @temp = ("Se ha registrado los cambios en los sistemas", [@array_nuevos]);
         $rpta{'mensaje'} = [@temp];
     } catch {
         #warn "got dbi error: $_";
