@@ -64,13 +64,13 @@ post '/guardar' => sub {
         }
 
         $rpta{'tipo_mensaje'} = "success";
-        my @temp = ("Se ha registrado los cambios en los subtitulos", [@array_nuevos]);
+        my @temp = ("Se ha registrado los cambios en los items", [@array_nuevos]);
         $rpta{'mensaje'} = [@temp];
     } catch {
         #warn "got dbi error: $_";
         $rpta{'tipo_mensaje'} = "error";
-        $rpta{'mensaje'} = "Se ha producido un error en guardar la tabla de subtitulos";
-        my @temp = ("Se ha producido un error en guardar la tabla de subtitulos", "" . $_);
+        $rpta{'mensaje'} = "Se ha producido un error en guardar la tabla de items";
+        my @temp = ("Se ha producido un error en guardar la tabla de items", "" . $_);
         $rpta{'mensaje'} = [@temp];
     };
     #print("\n");print Dumper(%rpta);print("\n");

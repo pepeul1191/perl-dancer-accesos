@@ -16,9 +16,10 @@ sub new {
 }
 
 sub listar {
-    my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM roles') 
+    my($self, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre FROM roles WHERE sistema_id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
@@ -33,10 +34,11 @@ sub listar {
 }
 
 sub crear {
-    my($self, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('INSERT INTO roles (nombre) VALUES (?)') 
+    my($self, $nombre, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO roles (nombre, sistema_id) VALUES (?,?)') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
+    $sth->bind_param( 2, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     
     my $id_generated = $self->{_dbh}->last_insert_id(undef, undef, undef, undef );
@@ -46,12 +48,12 @@ sub crear {
 }
 
 sub editar {
-    my($self, $id, $nombre) = @_;
-    my $sth = $self->{_dbh}->prepare('UPDATE roles SET nombre = ? WHERE id = ?') 
+    my($self, $id, $nombre, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('UPDATE roles SET nombre = ?, sistema_id = ? WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $nombre);
-    $sth->bind_param( 2, $id);
-
+    $sth->bind_param( 2, $sistema_id);
+    $sth->bind_param( 3, $id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }

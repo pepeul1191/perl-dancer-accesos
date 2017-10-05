@@ -10,8 +10,9 @@ use warnings;
 
 get '/listar/:sistema_id' => sub {
     my $model = 'Model::Rol';
+    my $sistema_id = param('sistema_id');
     my $roles= $model->new();
-    my @rpta = $roles->listar();
+    my @rpta = $roles->listar($sistema_id);
 
     return to_json \@rpta;
 };
@@ -21,7 +22,7 @@ post '/guardar' => sub {
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
     my @eliminados = @{$data->{"eliminados"}};
-    my $id_subtitulo = $data->{"extra"}->{'id_subtitulo'};
+    my $sistema_id = $data->{"extra"}->{'sistema_id'};
     my @array_nuevos;
     my %rpta = ();
 
@@ -30,7 +31,7 @@ post '/guardar' => sub {
            if ($nuevo) {
               my $temp_id = $nuevo->{'id'};
               my $nombre = $nuevo->{'nombre'};
-              my $id_generado = crear($nombre);
+              my $id_generado = crear($nombre, $sistema_id);
               my %temp = ();
               $temp{ 'temporal' } = $temp_id;
               $temp{ 'nuevo_id' } = $id_generado;
@@ -42,7 +43,7 @@ post '/guardar' => sub {
             if ($editado) {
               my $id = $editado->{'id'};
               my $nombre = $editado->{'nombre'};
-              editar($id, $nombre);
+              editar($id, $nombre, $sistema_id);
             }
         }
 
@@ -65,22 +66,22 @@ post '/guardar' => sub {
 };
 
 sub crear {
-    my($self, $nombre) = @_;
+    my($nombre, $sistema_id) = @_;
     my $model = 'Model::Rol';
     my $roles= $model->new();
 
-    return $roles->crear($nombre);
+    return $roles->crear($nombre, $sistema_id);
 }
 
 sub editar {
-    my($self, $id, $nombre) = @_;
+    my($id, $nombre, $sistema_id) = @_;
     my $model = 'Model::Rol';
     my $roles= $model->new();
-    $roles->editar($id, $nombre);
+    $roles->editar($id, $nombre, $sistema_id);
 }
 
 sub eliminar {
-    my($self, $id) = @_;
+    my($id) = @_;
     my $model = 'Model::Rol';
     my $roles= $model->new();
     $roles->eliminar($id);
@@ -122,7 +123,7 @@ post '/ascociar_permisos' => sub {
 };
 
 sub crear_asociacion {
-    my($self, $rol_id, $permiso_id) = @_;
+    my($rol_id, $permiso_id) = @_;
     my $model = 'Model::Rol';
     my $roles= $model->new();
 
@@ -130,7 +131,7 @@ sub crear_asociacion {
 }
 
 sub eliminar_asociacion {
-    my($self, $rol_id, $permiso_id) = @_;
+    my($rol_id, $permiso_id) = @_;
     my $model = 'Model::Rol';
     my $roles= $model->new();
 
