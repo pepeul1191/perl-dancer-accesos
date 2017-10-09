@@ -89,11 +89,12 @@ sub eliminar {
     $permisos->eliminar($id);
 }
 
-get '/listar_asociados/:rol_id' => sub {
+get '/listar_asociados/:sistema_id/:rol_id' => sub {
+    my $sistema_id = param('sistema_id');
     my $rol_id = param('rol_id');
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
-    my @rpta = $permisos->listar_asociados($rol_id);
+    my @rpta = $permisos->listar_asociados($sistema_id, $rol_id);
     
     return to_json \@rpta;
 };

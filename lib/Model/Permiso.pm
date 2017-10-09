@@ -68,11 +68,11 @@ sub eliminar {
 }
 
 sub listar_asociados {
-    my($self, $rol_id) = @_;
+    my($self, $sistema_id, $rol_id) = @_;
     my $sth = $self->{_dbh}->prepare('
         SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe, T.llave AS llave FROM
         (
-            SELECT id, nombre, llave, 0 AS existe FROM permisos
+            SELECT id, nombre, llave, 0 AS existe FROM permisos WHERE sistema_id = ?
         ) T
         LEFT JOIN
         (
@@ -82,7 +82,8 @@ sub listar_asociados {
         ) P
         ON T.id = P.id
     ') or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $rol_id);
+    $sth->bind_param( 1, $sistema_id);
+    $sth->bind_param( 2, $rol_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
