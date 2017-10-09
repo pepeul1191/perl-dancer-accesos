@@ -87,7 +87,7 @@ sub eliminar {
     $roles->eliminar($id);
 }
 
-post '/ascociar_permisos' => sub {
+post '/asociar_permisos' => sub {
     my $data = decode_json(param('data'));
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
