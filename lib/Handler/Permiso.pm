@@ -12,7 +12,7 @@ get '/listar/:sistema_id' => sub {
     my $sistema_id = param('sistema_id');
     my $model = 'Model::Permiso';
     my $permisos= $model->new();
-    my @rpta = $permisos->listar();
+    my @rpta = $permisos->listar($sistema_id);
 
     return to_json \@rpta;
 };

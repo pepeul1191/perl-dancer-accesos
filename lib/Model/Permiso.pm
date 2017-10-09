@@ -15,9 +15,10 @@ sub new {
 }
 
 sub listar {
-    my($self) = @_;
-    my $sth = $self->{_dbh}->prepare('SELECT id, nombre, llave FROM permisos') 
+    my($self, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT id, nombre, llave FROM permisos WHERE sistema_id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
