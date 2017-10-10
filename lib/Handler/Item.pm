@@ -7,6 +7,8 @@ use Try::Tiny;
 use strict;
 use warnings;
 use Model::Item;
+use utf8;
+use Encode qw( encode_utf8 );
 
 get '/listar/:modulo_id' => sub {
     my $modulo_id = param('modulo_id');
@@ -28,7 +30,7 @@ get '/listar/:modulo_id' => sub {
 };
 
 post '/guardar' => sub {
-    my $data = decode_json(param('data'));
+    my $data = decode_json(encode_utf8(param('data')));
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
     my @eliminados = @{$data->{"eliminados"}};
