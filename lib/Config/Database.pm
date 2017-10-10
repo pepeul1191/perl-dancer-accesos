@@ -1,7 +1,6 @@
 package Config::Database;
 use DBI;
 use utf8;
-binmode STDOUT, ":encoding(utf8)";
 
 sub new {
     my $class = shift;
@@ -10,7 +9,7 @@ sub new {
     my $dsn = "DBI:$driver:dbname=$database";
     my $userid = "";
     my $password = "";
-    my $dbh = DBI->connect($dsn, $userid, $password, { RaiseError => 1 })
+    my $dbh = DBI->connect($dsn, $userid, $password, { RaiseError => 1, sqlite_unicode => 1 })
                           or die $DBI::errstr;
 
     my $self = {
