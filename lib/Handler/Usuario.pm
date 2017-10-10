@@ -6,6 +6,8 @@ use Try::Tiny;
 use strict;
 use warnings;
 use Model::Usuario;
+use utf8;
+use Encode qw( encode_utf8 );
 
 =pod
     + $r->get('/usuario/listar')->to('usuario#listar');
@@ -21,9 +23,9 @@ use Model::Usuario;
 =cut
 
 get '/listar' => sub {
-  	my $model = 'Model::Usuario';
-  	my $usuarios= $model->new();
-  	my @rpta = $usuarios->listar();
+    my $model = 'Model::Usuario';
+    my $usuarios= $model->new();
+    my @rpta = $usuarios->listar();
 
     return to_json \@rpta;
 };
