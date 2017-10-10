@@ -7,6 +7,8 @@ use Data::Dumper;
 use Try::Tiny;
 use strict;
 use warnings;
+use utf8;
+use Encode qw( encode_utf8 );
 
 get '/listar/:sistema_id' => sub {
     my $sistema_id = param('sistema_id');
@@ -18,7 +20,7 @@ get '/listar/:sistema_id' => sub {
 };
 
 post '/guardar' => sub {
-    my $data = decode_json(param('data'));
+    my $data = decode_json(encode_utf8(param('data')));
     my @nuevos = @{$data->{"nuevos"}};
     my @editados = @{$data->{"editados"}};
     my @eliminados = @{$data->{"eliminados"}};
