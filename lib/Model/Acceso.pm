@@ -4,8 +4,8 @@ use Config::Database;
 sub new {
     my $class = shift;
     my $db = 'Config::Database';
-  	my $odb= $db->new();
-  	my $dbh = $odb->getConnection();
+    my $odb= $db->new();
+    my $dbh = $odb->getConnection();
     my $self = {
         _dbh => $dbh
     };

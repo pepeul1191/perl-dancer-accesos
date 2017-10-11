@@ -6,6 +6,7 @@ use Try::Tiny;
 use strict;
 use warnings;
 use Model::Usuario;
+use Model::Acceso;
 use utf8;
 use Encode qw( encode_utf8 );
 
@@ -34,18 +35,17 @@ get '/listar_usuarios' => sub {
     my $model = 'Model::Usuario';
     my $usuarios= $model->new();
     my @rpta = $usuarios->listar_usuarios();
-    my $json_text = to_json \@rpta;
 
     return to_json \@rpta;
 };
 
 post '/validar' => sub {
-	my $usuario =query_parameters->get('usuario');
-	my $contrasenia =query_parameters->get('contrasenia');
+    my $usuario =query_parameters->get('usuario');
+    my $contrasenia =query_parameters->get('contrasenia');
     $contrasenia =~ tr/ /+/;
-	my $model = 'Model::Usuario';
-  	my $usuarios= $model->new();
-  	my $rpta = $usuarios->validar($usuario, $contrasenia);
+    my $model = 'Model::Usuario';
+    my $usuarios= $model->new();
+    my $rpta = $usuarios->validar($usuario, $contrasenia);
     if($rpta == 1){
         #my @usuario = $self->obtener_id($usuario, $contrasenia);
         #my $acceso = 'MojoApp::Controller::Acceso';
@@ -53,6 +53,15 @@ post '/validar' => sub {
     }
     
     return $rpta;
+};
+
+get '/listar_accesos/:usuario_id' => sub {
+    my $usuario_id = param('usuario_id');
+    my $model = 'Model::Acceso';
+    my $accesos= $model->new();
+    my @rpta = $accesos->listar_accesos($usuario_id);
+
+    return to_json \@rpta;
 };
 
 1;
