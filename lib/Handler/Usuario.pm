@@ -47,9 +47,10 @@ post '/validar' => sub {
     my $usuarios= $model->new();
     my $rpta = $usuarios->validar($usuario, $contrasenia);
     if($rpta == 1){
-        #my @usuario = $self->obtener_id($usuario, $contrasenia);
-        #my $acceso = 'MojoApp::Controller::Acceso';
-        #$acceso->crear(@usuario[0]->{"id"});
+        my @usuario = $usuarios->obtener_id($usuario, $contrasenia);
+        my $model2 = 'Model::Acceso';
+        my $accesos= $model2->new();
+        $accesos->crear(@usuario[0]->{"id"});
     }
     
     return $rpta;
