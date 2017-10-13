@@ -65,4 +65,52 @@ get '/listar_accesos/:usuario_id' => sub {
     return to_json \@rpta;
 };
 
+post '/nombre_repetido' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my $usuario_id= $data->{"id"};
+    my $usuario = $data->{"usuario"};
+    my $model = 'Model::Usuario';
+    my $accesos= $model->new();
+    my $rpta = 0;
+    
+    if($usuario_id == 'E'){
+        #estamos hablando de un usuario nuevo, no tiene que repetirse el nombre
+        $rpta = $accesos->validar_usuario_repetido($usuario);
+    }else{
+        #estamos hablando de un usuario a ediatr, no tiene que repetirse el nombre a menos que estemo
+        $rpta = $accesos->validar_usuario_repetido_editado($usuario_id, $usuario);
+        if($rpta == 1){
+            $rpta = 0;
+        }else{
+            $rpta = $accesos->validar_usuario_repetido($usuario);
+        }
+    }
+    
+    return $rpta;
+};
+
+post '/correo_repetido' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my $usuario_id= $data->{"id"};
+    my $correo = $data->{"correo"};
+    my $model = 'Model::Usuario';
+    my $accesos= $model->new();
+    my $rpta = 0;
+    
+    if($usuario_id == 'E'){
+        #estamos hablando de un usuario nuevo, no tiene que repetirse el correo
+        $rpta = $accesos->validar_correo_repetido($correo);
+    }else{
+        #estamos hablando de un usuario a ediatr, no tiene que repetirse el nombre a menos que estemo
+        $rpta = $accesos->validar_correo_repetido_editado($usuario_id, $correo);
+        if($rpta == 1){
+            $rpta = 0;
+        }else{
+            $rpta = $accesos->validar_correo_repetido($correo);
+        }
+    }
+    
+    return $rpta;
+};
+
 1;

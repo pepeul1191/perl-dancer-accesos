@@ -206,11 +206,49 @@ sub validar_correo_repetido {
     return $rpta;
 }
 
+sub validar_correo_repetido_editado {
+    my($self, $usuario_id, $correo) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE correo = ? AND id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $correo );
+    $sth->bind_param( 2, $usuario_id );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
+
 sub validar_usuario_repetido {
     my($self, $usuario) = @_;
     my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE usuario = ?')
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $usuario );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
+
+sub validar_usuario_repetido_editado {
+    my($self, $usuario_id, $usuario) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE usuario = ? AND id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario );
+    $sth->bind_param( 2, $usuario_id );
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my $rpta;
