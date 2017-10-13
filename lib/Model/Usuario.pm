@@ -262,4 +262,23 @@ sub validar_usuario_repetido_editado {
     return $rpta;
 }
 
+sub validar_contrasenia_repetida {
+    my($self, $usuario_id, $contrasenia) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT COUNT(*) AS cantidad FROM usuarios WHERE contrasenia = ? AND id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $contrasenia );
+    $sth->bind_param( 2, $usuario_id );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
+
 1;

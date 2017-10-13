@@ -113,4 +113,17 @@ post '/correo_repetido' => sub {
     return $rpta;
 };
 
+post '/contrasenia_repetida' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my $usuario_id= $data->{"id"};
+    my $contrasenia = $data->{"contrasenia"};
+    my $model = 'Model::Usuario';
+    my $accesos= $model->new();
+    my $rpta = 0;
+    
+    $rpta = $accesos->validar_contrasenia_repetida($usuario_id, $contrasenia);
+    
+    return $rpta;
+};
+
 1;
