@@ -281,4 +281,22 @@ sub validar_contrasenia_repetida {
     return $rpta;
 }
 
+sub obtener_usuario_correo {
+    my($self, $usuario_id) = @_;
+    my $sth = $self->{_dbh}->prepare('SELECT usuario, correo FROM usuarios WHERE id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref;
+    }
+
+    $sth->finish;
+
+    return $rpta;
+}
+
 1;

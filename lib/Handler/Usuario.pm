@@ -126,4 +126,16 @@ post '/contrasenia_repetida' => sub {
     return $rpta;
 };
 
+get '/usuario_correo/:usuario_id' => sub {
+    my $usuario_id = param('usuario_id');
+    my $model = 'Model::Usuario';
+    my $usuarios= $model->new();
+    my $rpta = $usuarios->obtener_usuario_correo($usuario_id);
+    if (defined $rpta){
+        return to_json $rpta;
+    }else{
+        return 'null';
+    }
+};
+
 1;
