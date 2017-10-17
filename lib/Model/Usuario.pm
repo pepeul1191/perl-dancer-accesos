@@ -299,4 +299,40 @@ sub obtener_usuario_correo {
     return $rpta;
 }
 
+sub guardar_usuario_correo{
+    my($self, $usuario_id, $usuario, $correo) = @_;
+    my $sth = $self->{_dbh}->prepare('UPDATE usuarios SET usuario = ?,  correo = ? WHERE id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario );
+    $sth->bind_param( 2, $correo );
+    $sth->bind_param( 3, $usuario_id );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+}
+
+sub guardar_contrasenia{
+    my($self, $usuario_id, $contrasenia) = @_;
+    my $sth = $self->{_dbh}->prepare('UPDATE usuarios SET contrasenia = ? WHERE id = ?')
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $contrasenia );
+    $sth->bind_param( 2, $usuario_id );
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my $rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        $rpta = $ref->{'cantidad'};
+    }
+
+    $sth->finish;
+}
+
+
 1;

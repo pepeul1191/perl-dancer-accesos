@@ -138,4 +138,51 @@ get '/usuario_correo/:usuario_id' => sub {
     }
 };
 
+post '/guardar_usuario_correo' => sub {
+    my $usuario_json = decode_json(encode_utf8(param('usuario')));
+    my $usuario_id= $usuario_json->{"id"};
+    my $usuario= $usuario_json->{"usuario"};
+    my $correo = $usuario_json->{"correo"};
+    my %rpta = ();
+    
+    try {
+        my $model = 'Model::Usuario';
+        my $usuarios= $model->new();
+        $usuarios->guardar_usuario_correo($usuario_id, $usuario, $correo);
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha registrado los cambios en los datos generales del usuario");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        my @temp = ("Se ha producido un error en guardar los datos generales del usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    
+    return to_json \%rpta;
+};
+
+post '/guardar_contrasenia' => sub {
+    my $usuario_json = decode_json(encode_utf8(param('contrasenia')));
+    my $usuario_id= $usuario_json->{"id"};
+    my $contrasenia= $usuario_json->{"contrasenia"};
+    my %rpta = ();
+    
+    try {
+        my $model = 'Model::Usuario';
+        my $usuarios= $model->new();
+        $usuarios->guardar_contrasenia($usuario_id, $contrasenia);
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha actualizado la contrasenia del usuario");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        my @temp = ("Se ha producido un error en guardar los datos generales del usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    
+    return to_json \%rpta;
+};
+
 1;
