@@ -44,6 +44,23 @@ get '/usuario/:usuario_id' => sub {
     };
 };
 
+get '/usuario_asociado/:usuario_id' => sub {
+    my $model = 'Model::Sistema';
+    my $usuario_id = param('usuario_id');
+    my $sistemas= $model->new();
+    try {
+       my  @rpta = $sistemas->usuario_asociado($usuario_id);
+       return to_json \@rpta;
+    }
+    catch {
+        my %rpta = ();
+        $rpta{'tipo_mensaje'} = "error";
+        my @temp = ("Se ha producido un error en listar los sistemas asociados a dicho usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+        return to_json \%rpta;
+    };
+};
+
 post '/asociar_usuario' => sub {
     my $data = decode_json(encode_utf8(param('data')));
     my @nuevos = @{$data->{"nuevos"}};

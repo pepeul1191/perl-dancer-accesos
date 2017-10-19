@@ -96,6 +96,26 @@ sub usuario {
     return @rpta;
 }
 
+sub usuario_asociado {
+    my($self, $usuario_id) = @_;
+    my $sth = $self->{_dbh}->prepare('
+        SELECT S.id, S.nombre FROM sistemas S INNER JOIN 
+        usuarios_sistemas US ON S.id = US.sistema_id 
+        WHERE US.usuario_id = ?') or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
 sub crear_asociacion {
     my($self, $usuario_id, $sistema_id) = @_;
     my $sth = $self->{_dbh}->prepare('INSERT INTO usuarios_sistemas (usuario_id, sistema_id) VALUES (?, ?)') 
