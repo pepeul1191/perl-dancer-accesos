@@ -10,11 +10,6 @@ use Model::Acceso;
 use utf8;
 use Encode qw( encode_utf8 );
 
-=pod
-    $r->post('/usuario/asociar_permisos')->to('usuario#asociar_permisos');
-    $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
-=cut
-
 get '/listar' => sub {
     my $model = 'Model::Usuario';
     my $usuarios= $model->new();
@@ -187,6 +182,57 @@ get '/listar_permisos/:sistema_id/:usuario_id' => sub {
     return to_json \@rpta;
 };
 
+post '/asociar_permisos' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my @nuevos = @{$data->{"nuevos"}};
+    my @editados = @{$data->{"editados"}};
+    my @eliminados = @{$data->{"eliminados"}};
+    my $usuario_id = $data->{"extra"}->{'usuario_id'};
+    my @array_nuevos;
+    my %rpta = ();
+
+    try {
+        for my $nuevo(@nuevos){
+           if ($nuevo) {
+              my $permiso_id = $nuevo->{'id'};
+              crear_asociacion_permiso($usuario_id, $permiso_id);
+            }
+        }
+
+        for my $permiso_id(@eliminados){
+            eliminar_asociacion_permiso($usuario_id, $permiso_id);
+        }
+
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha registrado la asociación/deasociación de los permisos al usuario");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        $rpta{'mensaje'} = "Se ha producido un error en asociar/deasociar los permisos al usuario";
+        my @temp = ("Se ha producido un error en asociar/deasociar los permisos al usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    #print("\n");print Dumper(%rpta);print("\n");
+    return to_json \%rpta;
+};
+
+sub crear_asociacion_permiso {
+    my($usuario_id, $permiso_id) = @_;
+    my $model = 'Model::Usuario';
+    my $roles= $model->new();
+
+    return $roles->asociar_permiso($usuario_id, $permiso_id);
+}
+
+sub eliminar_asociacion_permiso {
+    my($usuario_id, $permiso_id) = @_;
+    my $model = 'Model::Usuario';
+    my $roles= $model->new();
+
+    return $roles->desasociar_permiso($usuario_id, $permiso_id);
+}
+
 get '/listar_roles/:sistema_id/:usuario_id' => sub {
     my $sistema_id = param('sistema_id');
     my $usuario_id = param('usuario_id');
@@ -196,5 +242,56 @@ get '/listar_roles/:sistema_id/:usuario_id' => sub {
     
     return to_json \@rpta;
 };
+
+post '/asociar_roles' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my @nuevos = @{$data->{"nuevos"}};
+    my @editados = @{$data->{"editados"}};
+    my @eliminados = @{$data->{"eliminados"}};
+    my $usuario_id = $data->{"extra"}->{'usuario_id'};
+    my @array_nuevos;
+    my %rpta = ();
+
+    try {
+        for my $nuevo(@nuevos){
+           if ($nuevo) {
+              my $rol_id = $nuevo->{'id'};
+              crear_asociacion_rol($usuario_id, $rol_id);
+            }
+        }
+
+        for my $rol_id(@eliminados){
+            eliminar_asociacion_rol($usuario_id, $rol_id);
+        }
+
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha registrado la asociación/deasociación de los roles al usuario");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        $rpta{'mensaje'} = "Se ha producido un error en asociar/deasociar los roles al usuario";
+        my @temp = ("Se ha producido un error en asociar/deasociar los roles al usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    #print("\n");print Dumper(%rpta);print("\n");
+    return to_json \%rpta;
+};
+
+sub crear_asociacion_rol {
+    my($usuario_id, $rol_id) = @_;
+    my $model = 'Model::Usuario';
+    my $roles= $model->new();
+
+    return $roles->asociar_rol($usuario_id, $rol_id);
+}
+
+sub eliminar_asociacion_rol {
+    my($usuario_id, $rol_id) = @_;
+    my $model = 'Model::Usuario';
+    my $roles= $model->new();
+
+    return $roles->desasociar_rol($usuario_id, $rol_id);
+}
 
 1;
