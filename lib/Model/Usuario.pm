@@ -91,11 +91,11 @@ sub obtener_id{
 }
 
 sub listar_permisos {
-    my($self, $usuario_id) = @_;
+    my($self, $sistema_id, $usuario_id) = @_;
     my $sth = $self->{_dbh}->prepare('
         SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe, T.llave AS llave FROM
         (
-            SELECT id, nombre, llave, 0 AS existe FROM permisos
+            SELECT id, nombre, llave, 0 AS existe FROM permisos WHERE sistema_id = ?
         ) T
         LEFT JOIN
         (
@@ -105,7 +105,8 @@ sub listar_permisos {
         ) P
         ON T.id = P.id
     ') or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 1, $sistema_id);
+    $sth->bind_param( 2, $usuario_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;
@@ -120,11 +121,11 @@ sub listar_permisos {
 }
 
 sub listar_roles {
-    my($self, $usuario_id) = @_;
+    my($self, $sistema_id, $usuario_id) = @_;
     my $sth = $self->{_dbh}->prepare('
         SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe FROM
         (
-            SELECT id, nombre, 0 AS existe FROM roles 
+            SELECT id, nombre, 0 AS existe FROM roles WHERE sistema_id = ?
         ) T
         LEFT JOIN
         (
@@ -134,7 +135,8 @@ sub listar_roles {
         ) P
         ON T.id = P.id
     ') or die "prepare statement failed: $dbh->errstr()";
-    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 1, $sistema_id);
+    $sth->bind_param( 2, $usuario_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
 
     my @rpta;

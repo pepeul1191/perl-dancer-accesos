@@ -11,14 +11,6 @@ use utf8;
 use Encode qw( encode_utf8 );
 
 =pod
-    + $r->get('/usuario/listar')->to('usuario#listar');
-    + $r->get('/usuario/listar_usuarios')->to('usuario#listar_usuarios');
-    $r->get('/usuario/listar_accesos/:usuario_id')->to('usuario#listar_accesos');
-    $r->get('/usuario/listar_permisos/:usuario_id')->to('usuario#listar_permisos');
-    $r->get('/usuario/listar_roles/:usuario_id')->to('usuario#listar_roles');
-    + $r->post('/usuario/validar')->to('usuario#validar');
-    $r->post('/usuario/validar_correo_repetido')->to('usuario#validar_correo_repetido');
-    $r->post('/usuario/validar_usuario_repetido')->to('usuario#validar_usuario_repetido');
     $r->post('/usuario/asociar_permisos')->to('usuario#asociar_permisos');
     $r->post('/usuario/asociar_roles')->to('usuario#asociar_roles');
 =cut
@@ -183,6 +175,26 @@ post '/guardar_contrasenia' => sub {
     };
     
     return to_json \%rpta;
+};
+
+get '/listar_permisos/:sistema_id/:usuario_id' => sub {
+    my $sistema_id = param('sistema_id');
+    my $usuario_id = param('usuario_id');
+    my $model = 'Model::Usuario';
+    my $usuarios= $model->new();
+    my @rpta = $usuarios->listar_permisos($sistema_id, $usuario_id);
+    
+    return to_json \@rpta;
+};
+
+get '/listar_roles/:sistema_id/:usuario_id' => sub {
+    my $sistema_id = param('sistema_id');
+    my $usuario_id = param('usuario_id');
+    my $model = 'Model::Usuario';
+    my $usuarios= $model->new();
+    my @rpta = $usuarios->listar_roles($sistema_id, $usuario_id);
+    
+    return to_json \@rpta;
 };
 
 1;
