@@ -7,6 +7,8 @@ use Try::Tiny;
 use strict;
 use warnings;
 use Model::Sistema;
+use utf8;
+use Encode qw( encode_utf8 );
 
 get '/listar' => sub {
     my $model = 'Model::Sistema';
@@ -54,7 +56,7 @@ post '/asociar_usuario' => sub {
     try {
         for my $nuevo(@nuevos){
            if ($nuevo) {
-              my $sistema_id = $nuevo->{'sistema_id'};
+              my $sistema_id = $nuevo->{'id'};
               crear_asociacion($usuario_id, $sistema_id);
             }
         }
