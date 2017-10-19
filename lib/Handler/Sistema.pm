@@ -25,6 +25,74 @@ get '/listar' => sub {
     };
 };
 
+get '/usuario/:usuario_id' => sub {
+    my $model = 'Model::Sistema';
+    my $usuario_id = param('usuario_id');
+    my $sistemas= $model->new();
+    try {
+       my  @rpta = $sistemas->usuario($usuario_id);
+       return to_json \@rpta;
+    }
+    catch {
+        my %rpta = ();
+        $rpta{'tipo_mensaje'} = "error";
+        my @temp = ("Se ha producido un error en listar los sistemas asociados a dicho usuario", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+        return to_json \%rpta;
+    };
+};
+
+post '/asociar_usuario' => sub {
+    my $data = decode_json(encode_utf8(param('data')));
+    my @nuevos = @{$data->{"nuevos"}};
+    my @editados = @{$data->{"editados"}};
+    my @eliminados = @{$data->{"eliminados"}};
+    my $usuario_id = $data->{"extra"}->{'usuario_id'};
+    my @array_nuevos;
+    my %rpta = ();
+
+    try {
+        for my $nuevo(@nuevos){
+           if ($nuevo) {
+              my $sistema_id = $nuevo->{'sistema_id'};
+              crear_asociacion($usuario_id, $sistema_id);
+            }
+        }
+
+        for my $sistema_id(@eliminados){
+            eliminar_asociacion($usuario_id, $sistema_id);
+        }
+
+        $rpta{'tipo_mensaje'} = "success";
+        my @temp = ("Se ha registrado la asociación/deasociación de los usuarios al sistema");
+        $rpta{'mensaje'} = [@temp];
+    } catch {
+        #warn "got dbi error: $_";
+        $rpta{'tipo_mensaje'} = "error";
+        $rpta{'mensaje'} = "Se ha producido un error en asociar/deasociar los usuarios al sistema";
+        my @temp = ("Se ha producido un error en asociar/deasociar los usuarios al sistema", "" . $_);
+        $rpta{'mensaje'} = [@temp];
+    };
+    #print("\n");print Dumper(%rpta);print("\n");
+    return to_json \%rpta;
+};
+
+sub crear_asociacion {
+    my($usuario_id, $sistema_id) = @_;
+    my $model = 'Model::Sistema';
+    my $sistemas = $model->new();
+
+    return $sistemas->crear_asociacion($usuario_id, $sistema_id);
+}
+
+sub eliminar_asociacion {
+    my($usuario_id, $sistema_id) = @_;
+    my $model = 'Model::Sistema';
+    my $sistemas= $model->new();
+
+    return $sistemas->eliminar_asociacion($usuario_id, $sistema_id);
+}
+
 post '/guardar' => sub {
     my $data = decode_json(param('data'));
     my @nuevos = @{$data->{"nuevos"}};

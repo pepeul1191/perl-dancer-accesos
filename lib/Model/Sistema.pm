@@ -55,14 +55,6 @@ sub editar {
     $sth->bind_param( 2, $version);
     $sth->bind_param( 3, $repositorio);
     $sth->bind_param( 4, $id);
-    
-    print("\n1 +++++++++++++++++++++++++++++++++++++++++\n");
-    print($id);
-    print($nombre);
-    print($version);
-    print($repositorio);
-    print("\n2 +++++++++++++++++++++++++++++++++++++++++\n");
-
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }
@@ -72,6 +64,54 @@ sub eliminar {
     my $sth = $self->{_dbh}->prepare('DELETE FROM sistemas WHERE id = ?') 
         or die "prepare statement failed: $dbh->errstr()";
     $sth->bind_param( 1, $id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub usuario {
+    my($self, $usuario_id) = @_;
+    my $sth = $self->{_dbh}->prepare('
+        SELECT T.id AS id, T.nombre AS nombre, (CASE WHEN (P.existe = 1) THEN 1 ELSE 0 END) AS existe FROM
+        (
+            SELECT id, nombre, 0 AS existe FROM sistemas
+        ) T
+        LEFT JOIN
+        (
+            SELECT S.id, S.nombre, 1 AS existe FROM sistemas S
+            INNER JOIN usuarios_sistemas US ON US.sistema_id = S.id
+            WHERE US.usuario_id = ?
+        ) P
+        ON T.id = P.id') or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+
+    my @rpta;
+
+    while (my $ref = $sth->fetchrow_hashref()) {
+        push @rpta, $ref;
+    }
+
+    $sth->finish;
+
+    return @rpta;
+}
+
+sub crear_asociacion {
+    my($self, $usuario_id, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('INSERT INTO usuarios_sistemas (usuario_id, sistema_id) VALUES (?, ?)') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $sistema_id);
+    $sth->execute() or die "execution failed: $dbh->errstr()";
+    $sth->finish;
+}
+
+sub eliminar_asociacion {
+    my($self, $usuario_id, $sistema_id) = @_;
+    my $sth = $self->{_dbh}->prepare('DELETE FROM usuarios_sistemas WHERE usuario_id = ? AND sistema_id = ?') 
+        or die "prepare statement failed: $dbh->errstr()";
+    $sth->bind_param( 1, $usuario_id);
+    $sth->bind_param( 2, $sistema_id);
     $sth->execute() or die "execution failed: $dbh->errstr()";
     $sth->finish;
 }
